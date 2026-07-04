@@ -3,7 +3,7 @@
 Product catalog microservice for the **E-Commerce Microservices** system — handles product and category management with dynamic filtering, pagination, and soft-delete support. Built as part of an industrial-level Spring Boot microservices portfolio project.
 
 ![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.x-brightgreen)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.15-brightgreen)
 ![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2024.0.1-blue)
 ![SQL Server](https://img.shields.io/badge/Database-SQL%20Server-red)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
@@ -54,7 +54,7 @@ Key design decisions and the reasoning behind them:
 ## 🛠️ Tech Stack
 
 - **Java 17**
-- **Spring Boot 3.5.x**
+- **Spring Boot 3.5.15**
 - **Spring Cloud 2024.0.1** (Eureka Client)
 - **Spring Data JPA** (Hibernate)
 - **Spring Validation** (`@Valid`)
@@ -230,4 +230,4 @@ This project is part of a personal portfolio and is available under the MIT Lice
 - [eureka-server](#)
 - [api-gateway](#)
 - [user-service](#)
-- [order-service](#) *(coming soon)*
+- [order-service](#) 
