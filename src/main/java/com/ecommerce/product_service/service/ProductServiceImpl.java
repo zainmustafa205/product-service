@@ -5,6 +5,7 @@ import com.ecommerce.product_service.dto.ProductResponseDTO;
 import com.ecommerce.product_service.entity.Category;
 import com.ecommerce.product_service.entity.Product;
 import com.ecommerce.product_service.exception.DuplicateResourceException;
+import com.ecommerce.product_service.exception.InsufficientStockException;
 import com.ecommerce.product_service.exception.ResourceNotFoundException;
 import com.ecommerce.product_service.repository.CategoryRepository;
 import com.ecommerce.product_service.repository.ProductRepository;
@@ -125,5 +126,32 @@ public class ProductServiceImpl implements ProductService {
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    public void reduceStock(Long productId, Integer quantity) {
+
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
+
+        if (product.getStockQuantity() < quantity) {
+            throw new InsufficientStockException(
+                "Insufficient stock for product: " + product.getName() +
+                " (available: " + product.getStockQuantity() + ", requested: " + quantity + ")"
+        );
+         }
+
+        product.setStockQuantity(product.getStockQuantity() - quantity);
+        productRepository.save(product);
+    }
+
+    @Override
+    public void restoreStock(Long productId, Integer quantity) {
+        
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
+
+        product.setStockQuantity(product.getStockQuantity() + quantity);
+        productRepository.save(product);
     }
 }

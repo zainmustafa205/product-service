@@ -13,4 +13,6 @@ public interface ProductService {
     Page<ProductResponseDTO> getProducts(Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
     ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto);
     void deleteProduct(Long id);
+    void reduceStock(Long productId, Integer quantity);
+    void restoreStock(Long productId, Integer quantity);
 }
