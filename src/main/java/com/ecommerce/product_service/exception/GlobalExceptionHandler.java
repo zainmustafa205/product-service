@@ -25,6 +25,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientStock(InsufficientStockException ex) {
+    
+        ErrorResponse error = ErrorResponse.builder()
+        .timestamp(LocalDateTime.now())
+        .status(HttpStatus.CONFLICT.value())
+        .error(HttpStatus.CONFLICT.getReasonPhrase())
+        .message(ex.getMessage())
+        .build();
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+}
+
         @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ErrorResponse> handleDuplicate(DuplicateResourceException ex) {
         ErrorResponse error = ErrorResponse.builder()
