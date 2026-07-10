@@ -48,6 +48,7 @@ Key design decisions and the reasoning behind them:
 | **`JpaSpecificationExecutor`** for filtering | Enables dynamic, combinable filters (category + price range) without writing a separate repository method for every possible combination. |
 | **SKU as a unique business identifier** | Mirrors real-world inventory systems where products are tracked by a stable, human-readable code — not just the database-generated ID. |
 | **DTOs for all API boundaries** | Entities are never exposed directly, preventing accidental over-exposure of internal fields and decoupling the API contract from the persistence model. |
+| **Dedicated stock endpoints** (`reduce-stock` / `restore-stock`) | Stock mutation is a distinct concern from a general product update — keeping it as separate endpoints gives `order-service` a narrow, purpose-built contract instead of forcing it to send a full `ProductRequestDTO` just to change quantity. |
 
 ---
 
@@ -120,6 +121,61 @@ GET /v1/products?categoryId=2&minPrice=100&maxPrice=500&page=0&size=10&sort=pric
 
 ---
 
+### 🔗 Inter-Service Endpoints (Stock Management)
+
+These endpoints are not part of the general product CRUD flow — they exist specifically to support **`order-service`**, which calls them synchronously via **Feign Client** during order placement and cancellation.
+
+| Method | Endpoint | Description | Used By |
+|---|---|---|---|
+| `PUT` | `/v1/products/{id}/reduce-stock` | Decrements stock quantity when an order is placed | `order-service` (on order placement) |
+| `PUT` | `/v1/products/{id}/restore-stock` | Increments stock quantity back when an order is cancelled | `order-service` (on order cancellation, rollback) |
+
+**Why separate from `PUT /v1/products/{id}`:**
+A full product update requires the entire `ProductRequestDTO` (name, price, category, etc.), which is unnecessary — and risky — for a service that only needs to adjust one numeric field. These endpoints expose a narrow, intention-revealing contract: `order-service` only ever needs to say "reduce by X" or "restore X," not touch the rest of the product.
+
+**Example Request — Reduce Stock**
+```
+PUT /v1/products/15/reduce-stock
+```
+```json
+{
+  "quantity": 2
+}
+```
+
+**Example Response**
+```json
+{
+  "id": 15,
+  "name": "Wireless Mouse",
+  "stockQuantity": 148,
+  "sku": "WM-2024-001",
+  "active": true
+}
+```
+
+**Example Request — Restore Stock (on order cancellation)**
+```
+PUT /v1/products/15/restore-stock
+```
+```json
+{
+  "quantity": 2
+}
+```
+
+**Error case — Insufficient stock:**
+```json
+{
+  "timestamp": "2026-07-09T11:20:00",
+  "status": 409,
+  "error": "Conflict",
+  "message": "Insufficient stock for product id: 15"
+}
+```
+
+---
+
 ## 📦 Sample Request/Response
 
 **Create Product — `POST /v1/products`**
@@ -174,7 +230,7 @@ GET /v1/products?categoryId=2&minPrice=100&maxPrice=500&page=0&size=10&sort=pric
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/product-service.git
+git clone https://github.com/zainmustafa205/product-service.git
 cd product-service
 ```
 
@@ -212,6 +268,7 @@ Visit `http://localhost:8761` and confirm `PRODUCT-SERVICE` appears in the list 
 
 ## 🗺️ Roadmap
 
+- [x] Add stock reduce/restore endpoints for `order-service` integration
 - [ ] Integrate with `order-service` via Feign Client for stock validation
 - [ ] Add caching layer for frequently accessed products
 - [ ] Add Flyway migrations for schema versioning
@@ -227,7 +284,7 @@ This project is part of a personal portfolio and is available under the MIT Lice
 
 ## 🔗 Related Repositories
 
-- [eureka-server](#)
-- [api-gateway](#)
-- [user-service](#)
-- [order-service](#) 
+- [eureka-server](https://github.com/zainmustafa205/eureka-server)
+- [api-gateway](https://github.com/zainmustafa205/api-gateway)
+- [user-service](https://github.com/zainmustafa205/user-service)
+- [order-service](https://github.com/zainmustafa205/order-service)
