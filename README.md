@@ -268,7 +268,6 @@ Visit `http://localhost:8761` and confirm `PRODUCT-SERVICE` appears in the list 
 
 ## 🗺️ Roadmap
 
-- [ ] Integrate with `order-service` via Feign Client for stock validation
 - [ ] Add caching layer for frequently accessed products
 - [ ] Add Flyway migrations for schema versioning
 - [ ] Add unit and integration tests
