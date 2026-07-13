@@ -268,7 +268,6 @@ Visit `http://localhost:8761` and confirm `PRODUCT-SERVICE` appears in the list 
 
 ## 🗺️ Roadmap
 
-- [x] Add stock reduce/restore endpoints for `order-service` integration
 - [ ] Integrate with `order-service` via Feign Client for stock validation
 - [ ] Add caching layer for frequently accessed products
 - [ ] Add Flyway migrations for schema versioning
@@ -288,3 +287,4 @@ This project is part of a personal portfolio and is available under the MIT Lice
 - [api-gateway](https://github.com/zainmustafa205/api-gateway)
 - [user-service](https://github.com/zainmustafa205/user-service)
 - [order-service](https://github.com/zainmustafa205/order-service)
+- [payment-service](https://github.com/zainmustafa205/payment-service)
