@@ -12,7 +12,7 @@ Product catalog microservice for the **E-Commerce Microservices** system — han
 
 ## 📖 Overview
 
-`product-service` is one of five microservices in a larger e-commerce system. It owns the **product catalog domain** — creating, updating, retrieving, and soft-deleting products and categories — and exposes REST APIs consumed by other services (like `order-service`) and by the API Gateway.
+`product-service` is one of Six microservices in a larger e-commerce system. It owns the **product catalog domain** — creating, updating, retrieving, and soft-deleting products and categories — and exposes REST APIs consumed by other services (like `order-service`) and by the API Gateway.
 
 This service is part of a larger system. See the [main project README](#) for the full architecture and links to all repositories.
 
@@ -242,8 +242,8 @@ CREATE DATABASE product_service_db;
 
 ### 3. Set environment variables
 ```bash
-export DB_USERNAME=your_sql_username
-export DB_PASSWORD=your_sql_password
+export DB_USERNAME=${DB_USERNAME_PRODUCT_SERVICE}
+export DB_PASSWORD=${DB_PASSWORD_PRODUCT_SERVICE}
 ```
 
 ### 4. Run the application
