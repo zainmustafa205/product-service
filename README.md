@@ -14,7 +14,7 @@ Product catalog microservice for the **E-Commerce Microservices** system — han
 
 `product-service` is one of Six microservices in a larger e-commerce system. It owns the **product catalog domain** — creating, updating, retrieving, and soft-deleting products and categories — and exposes REST APIs consumed by other services (like `order-service`) and by the API Gateway.
 
-This service is part of a larger system. See the [main project README](#) for the full architecture and links to all repositories.
+This service is part of a larger system. See the [main project README](https://github.com/zainmustafa205/ecommerce-microservices) for the full architecture and links to all repositories.
 
 ### Part of the E-Commerce Microservices Ecosystem
 
